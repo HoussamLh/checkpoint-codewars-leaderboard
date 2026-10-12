@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="script.js" defer></script>
   <title>Codewars leaderboard</title>
 </head>
 <body>
@@ -12,8 +13,18 @@
 
   <main>
     <p>Compare Codewars users by their programming scores.</p>
+    <form id="users-form">
+      <label for="usernames"> Codewares Usernames </label>
+      <input 
+      type="text" 
+      id="usernames" 
+      name="usernames" 
+      placeholder="Sam, Ali, John" 
+      required
+      >
+      <button type="submit"> Get LeaderBoard </button>
+    </form>
+    <p id="message" role="status"></p>
   </main>
 </body>
-
-<script src="index.mjs" type="module"></script>
 </html>
