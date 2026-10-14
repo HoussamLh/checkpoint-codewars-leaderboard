@@ -1,30 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="script.js" defer></script>
-  <title>Codewars leaderboard</title>
-</head>
-<body>
-  <header>
-    <h1>Codewars Leaderboard</h1>
-  </header>
+  <head>
+    <meta 
+    name="description"
+    content="Compare Codewars users by overall scores and programming language rankings."
+    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" type="module"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>Codewars leaderboard</title>
+  </head>
+  <body>
+    <header>
+      <h1>Codewars Leaderboard</h1>
+    </header>
 
-  <main>
-    <p>Compare Codewars users by their programming scores.</p>
-    <form id="users-form">
-      <label for="usernames"> Codewares Usernames </label>
-      <input 
-      type="text" 
-      id="usernames" 
-      name="usernames" 
-      placeholder="Sam, Ali, John" 
-      required
-      >
-      <button type="submit"> Get LeaderBoard </button>
-    </form>
-    <p id="message" role="status"></p>
-  </main>
-</body>
+    <main>
+      <p>Compare Codewars users by their programming scores.</p>
+      <form id="users-form">
+        <label for="usernames"> Codewars usernames </label>
+        <input
+          type="text"
+          id="usernames"
+          name="usernames"
+          placeholder="Sam, Ali, John"
+          required
+        >
+        <button type="submit">Get LeaderBoard</button>
+      </form>
+      <p id="message" role="status"></p>
+
+      <div>
+        <label for="ranking">Choose a ranking:</label>
+
+        <select id="ranking">
+          <option value="overall">Overall</option>
+        </select>
+      </div>
+
+      <section aria-labelledby="leaderboard-heading">
+        <h2 id="leaderboard-heading">Leaderboard</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Clan</th>
+              <th scope="col">Score</th>
+            </tr>
+          </thead>
+
+          <tbody id="leaderboard-body"></tbody>
+        </table>
+      </section>
+    </main>
+  </body>
 </html>

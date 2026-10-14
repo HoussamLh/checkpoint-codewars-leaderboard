@@ -1,33 +1,155 @@
-// This is a placeholder file which shows how you use the nock library to
-// "mock" fetch requests, replacing real requests with fake ones that you
-// control in the test. This means you can "force" the fetch request to return
-// data in the format that you want.
-// IMPORTANT: You _must_ run npm install within the Project-Codewars-Leaderboard
-// folder for this to work.
-// You can change or delete the contents of the file once you have understood
-// how it works.
-
 import test from "node:test";
 import assert from "node:assert";
 import nock from "nock";
-import { makeFetchRequest } from "./index.mjs";
+import {
+  getCodewarsUser,
+  sortUsersByScore,
+  getLanguages,
+  sortUsersByLanguage,
+} from "./index.mjs";
 
-test("mocks a fetch function", async () => {
-  // Create a fetch request "mock" using the nock library, which "replaces"
-  // real requests with fake ones that we can control in the test using nock
-  // functions.
-  // In this example, we set up nock so that it looks for GET requests to
-  // https://example.com/test (no other URLs will work) and responds with a 200
-  // HTTP status code, and the body {"user": "someone"}.
-  const scope = nock("https://example.com").get("/test").reply(200, JSON.stringify({ user: "someone" }));
+test("fetches a Codewars user successfully", async () => {
+  const scope = nock("https://www.codewars.com")
+    .get("/api/v1/users/Sam")
+    .reply(200, {
+      username: "Sam",
+      clan: "CodeYourFuture",
+      ranks: {
+        overall: { score: 500 },
+      },
+    });
 
-  // Check that the response we got back included the fake body we set up.
-  const response = await makeFetchRequest();
-  const parsedResponse = await response.json();
-  assert(parsedResponse.user === "someone");
+  const user = await getCodewarsUser("Sam");
 
-  // Ensure that a fetch request has been replaced by the nock library. This
-  // helps ensure that you're not making real fetch requests that don't match
-  // the nock configuration.
-  assert(scope.isDone() === true, "No matching fetch request has been made");
+  assert.strictEqual(user.username, "Sam");
+  assert.strictEqual(user.ranks.overall.score, 500);
+  assert.strictEqual(scope.isDone(), true);
+});
+
+test("throws an error when a Codewars user does not exist", async () => {
+  const scope = nock("https://www.codewars.com")
+    .get("/api/v1/users/UnknownUser")
+    .reply(404);
+
+  await assert.rejects(getCodewarsUser("UnknownUser"), {
+    message:
+      'User "UnknownUser" was not found. Check the spelling and try again.',
+  });
+
+  assert.strictEqual(scope.isDone(), true);
+});
+
+test("handles a Codewars server error", async () => {
+  const scope = nock("https://www.codewars.com")
+    .get("/api/v1/users/Sam")
+    .reply(500);
+
+  await assert.rejects(getCodewarsUser("Sam"), {
+    message: "Unable to retrieve Codewars user data.",
+  });
+
+  assert.strictEqual(scope.isDone(), true);
+});
+
+test("sorts users by overall score from highest to lowest", () => {
+  const users = [
+    { username: "Sam", ranks: { overall: { score: 300 } } },
+    { username: "Ali", ranks: { overall: { score: 900 } } },
+    { username: "John", ranks: { overall: { score: 500 } } },
+  ];
+
+  const result = sortUsersByScore(users);
+
+  assert.deepStrictEqual(
+    result.map((user) => user.username),
+    ["Ali", "John", "Sam"],
+  );
+});
+
+test("sorting does not change the original array", () => {
+  const users = [
+    { username: "Sam", ranks: { overall: { score: 300 } } },
+    { username: "Ali", ranks: { overall: { score: 900 } } },
+  ];
+
+  sortUsersByScore(users);
+
+  assert.deepStrictEqual(
+    users.map((user) => user.username),
+    ["Sam", "Ali"],
+  );
+});
+
+test("returns unique programming languages", () => {
+  const users = [
+    {
+      ranks: {
+        languages: {
+          javascript: { score: 500 },
+          python: { score: 200 },
+        },
+      },
+    },
+    {
+      ranks: {
+        languages: {
+          javascript: { score: 300 },
+          ruby: { score: 400 },
+        },
+      },
+    },
+  ];
+
+  const languages = getLanguages(users);
+
+  assert.deepStrictEqual(languages, ["javascript", "python", "ruby"]);
+});
+
+test("excludes users without the selected language and sorts by score", () => {
+  const users = [
+    {
+      username: "Sam",
+      ranks: {
+        languages: {
+          javascript: { score: 500 },
+          python: { score: 300 },
+        },
+      },
+    },
+    {
+      username: "Ali",
+      ranks: {
+        languages: {
+          python: { score: 400 },
+        },
+      },
+    },
+    {
+      username: "John",
+      ranks: {
+        languages: {
+          javascript: { score: 800 },
+        },
+      },
+    },
+  ];
+  const result = sortUsersByLanguage(users, "javascript");
+
+  assert.deepStrictEqual(
+    result.map((user) => user.username),
+    ["John", "Sam"],
+  );
+});
+
+test("shows a helpful message when the network request fails", async () => {
+  const scope = nock("https://www.codewars.com")
+    .get("/api/v1/users/Sam")
+    .replyWithError("Network connection failed");
+
+  await assert.rejects(getCodewarsUser("Sam"), {
+    message:
+      "Could not connect to Codewars. Check your internet connection and try again.",
+  });
+
+  assert.strictEqual(scope.isDone(), true);
 });
