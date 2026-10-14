@@ -6,6 +6,7 @@ import {
   sortUsersByScore,
   getLanguages,
   sortUsersByLanguage,
+  parseUsernames,
 } from "./index.mjs";
 
 test("fetches a Codewars user successfully", async () => {
@@ -152,4 +153,12 @@ test("shows a helpful message when the network request fails", async () => {
   });
 
   assert.strictEqual(scope.isDone(), true);
+});
+
+test("removes duplicate usernames", () => {
+  const users = "Sam, Ali, Sam, John, Ali";
+
+  const result = parseUsernames(users);
+
+  assert.deepStrictEqual(result, ["Sam", "Ali", "John"]);
 });
