@@ -31,7 +31,7 @@ form.addEventListener("submit", async (event) => {
   }
 
   currentUsers = [];
-  
+
   leaderboardBody.replaceChildren();
   message.textContent = "";
   resetRankingSelect();
@@ -69,6 +69,7 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
+// display leaderboard table
 function displayLeaderboard(users, selectedRanking = "overall") {
   leaderboardBody.replaceChildren();
 
@@ -80,29 +81,35 @@ function displayLeaderboard(users, selectedRanking = "overall") {
   const topUser = sortedUsers[0];
 
   for (const user of sortedUsers) {
-    const row = document.createElement("tr");
-
-    if (user === topUser) {
-      row.classList.add("top-user");
-    }
-
-    const usernameCell = document.createElement("th");
-    usernameCell.scope = "row";
-    usernameCell.textContent = user.username;
-
-    const clanCell = document.createElement("td");
-    clanCell.textContent = user.clan || "—";
-
-    const scoreCell = document.createElement("td");
-
-    scoreCell.textContent = getUserScore(user, selectedRanking);
-
-    row.appendChild(usernameCell);
-    row.appendChild(clanCell);
-    row.appendChild(scoreCell);
-
-    leaderboardBody.appendChild(row);
+      const isTopUser = user === topUser;
+      const row = createLeaderboardRow(user, selectedRanking, isTopUser);
+      leaderboardBody.appendChild(row);
   }
+}
+
+// create leaderboard row
+function createLeaderboardRow(user, selectedRanking, isTopUser) {
+  const row = document.createElement("tr");
+
+  if (isTopUser) {
+    row.classList.add("top-user");
+  }
+
+  const usernameCell = document.createElement("th");
+  usernameCell.scope = "row";
+  usernameCell.textContent = user.username;
+
+  const clanCell = document.createElement("td");
+  clanCell.textContent = user.clan || "—";
+
+  const scoreCell = document.createElement("td");
+  scoreCell.textContent = getUserScore(user, selectedRanking);
+
+  row.appendChild(usernameCell);
+  row.appendChild(clanCell);
+  row.appendChild(scoreCell);
+
+  return row;
 }
 
 // display languages
