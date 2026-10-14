@@ -5,7 +5,7 @@
 
 **Command:** `npm test`
 
-**Result:** 8 tests passed, 0 failed.
+**Result:** 10 tests passed, 0 failed.
 
 The tests verify:
 
@@ -17,6 +17,8 @@ The tests verify:
 - Collecting unique programming languages.
 - Excluding users without the selected language and sorting the remaining users.
 - Displaying a helpful error message when a network request fails.
+- removes duplicate usernames.
+- returns overall and language-specific user scores.
 
 API requests are mocked using `nock`.
 
