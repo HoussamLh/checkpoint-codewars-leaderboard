@@ -1,7 +1,4 @@
 
-
-https://github.com/user-attachments/assets/c8a61a02-2a66-4f11-a4e5-728b87be9a0a
-
 # Codewars Leaderboard — Testing Evidence
 
 ## 1. Automated Unit Tests
