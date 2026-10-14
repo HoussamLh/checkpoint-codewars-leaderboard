@@ -25,19 +25,22 @@ rankingSelect.addEventListener("change", () => {
 // Handle username searches
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+
   if (submitButton.disabled) {
     return;
   }
+
   currentUsers = [];
+  
   leaderboardBody.replaceChildren();
   message.textContent = "";
   resetRankingSelect();
 
   // 1. Get and clean the usernames
-  const validUsers = parseUsernames(usernamesInput.value);
+  const validUsernames = parseUsernames(usernamesInput.value);
 
   // 2. Validate the input
-  if (validUsers.length === 0) {
+  if (validUsernames.length === 0) {
     message.textContent = "Please enter at least one valid username.";
     return;
   }
@@ -48,7 +51,7 @@ form.addEventListener("submit", async (event) => {
   message.textContent = "Loading Codewars users...";
 
   try {
-    for (const username of validUsers) {
+    for (const username of validUsernames) {
       const user = await getCodewarsUser(username);
       users.push(user);
     }
