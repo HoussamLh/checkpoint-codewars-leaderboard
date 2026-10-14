@@ -62,3 +62,26 @@ export function sortUsersByLanguage(users, selectedRanking) {
 
   return sortedUsers;
 }
+
+// converting the username input and remove duplicate usernames.
+export function parseUsernames(input) {
+  // Step 1: Convert the input string into an array
+  const usernames = input
+    .split(",")
+    .map((name) => name.trim())
+    .filter((name) => name !== "");
+
+  // Step 2: Remove duplicate usernames
+  const uniqueUsernames = [...new Set(usernames)];
+
+  // Step 3: Return the final array
+  return uniqueUsernames;
+}
+
+// user score calculation
+export function getUserScore(user, selectedRanking = "overall") {
+  if (selectedRanking === "overall") {
+    return user.ranks.overall.score;
+  }
+  return user.ranks.languages[selectedRanking].score;
+}

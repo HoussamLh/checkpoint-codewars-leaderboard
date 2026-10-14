@@ -3,6 +3,8 @@ import {
   sortUsersByScore,
   getLanguages,
   sortUsersByLanguage,
+  parseUsernames,
+  getUserScore,
 } from "./index.mjs";
 
 const form = document.getElementById("users-form");
@@ -23,23 +25,22 @@ rankingSelect.addEventListener("change", () => {
 // Handle username searches
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+
   if (submitButton.disabled) {
     return;
   }
+
   currentUsers = [];
+
   leaderboardBody.replaceChildren();
   message.textContent = "";
   resetRankingSelect();
 
   // 1. Get and clean the usernames
-  const usernames = usernamesInput.value;
-  const validUsers = usernames
-    .split(",")
-    .map((name) => name.trim())
-    .filter((name) => name !== "");
+  const validUsernames = parseUsernames(usernamesInput.value);
 
   // 2. Validate the input
-  if (validUsers.length === 0) {
+  if (validUsernames.length === 0) {
     message.textContent = "Please enter at least one valid username.";
     return;
   }
@@ -50,7 +51,7 @@ form.addEventListener("submit", async (event) => {
   message.textContent = "Loading Codewars users...";
 
   try {
-    for (const username of validUsers) {
+    for (const username of validUsernames) {
       const user = await getCodewarsUser(username);
       users.push(user);
     }
@@ -60,17 +61,15 @@ form.addEventListener("submit", async (event) => {
     displayLanguages(users);
     displayLeaderboard(users);
 
-    message.textContent = 
-    `${users.length} ${users.length === 1 ? "user" : "users"} loaded successfully.`;
-
+    message.textContent = `${users.length} ${users.length === 1 ? "user" : "users"} loaded successfully.`;
   } catch (error) {
     message.textContent = error.message;
-
   } finally {
     submitButton.disabled = false;
   }
 });
 
+// display leaderboard table
 function displayLeaderboard(users, selectedRanking = "overall") {
   leaderboardBody.replaceChildren();
 
@@ -79,40 +78,41 @@ function displayLeaderboard(users, selectedRanking = "overall") {
       ? sortUsersByScore(users)
       : sortUsersByLanguage(users, selectedRanking);
 
+  const topUser = sortedUsers[0];
+
   for (const user of sortedUsers) {
-    const row = document.createElement("tr");
-
-    if (user === sortedUsers[0]) {
-      row.classList.add("top-user");
-    }
-
-    const usernameCell = document.createElement("th");
-    usernameCell.scope = "row";
-    usernameCell.textContent = user.username;
-
-    const clanCell = document.createElement("td");
-    clanCell.textContent = user.clan || "—";
-
-    const scoreCell = document.createElement("td");
-
-    let score;
-
-    if (selectedRanking === "overall") {
-      score = user.ranks.overall.score;
-    } else {
-      score = user.ranks.languages[selectedRanking].score;
-    }
-
-    scoreCell.textContent = score;
-
-    row.appendChild(usernameCell);
-    row.appendChild(clanCell);
-    row.appendChild(scoreCell);
-
-    leaderboardBody.appendChild(row);
+      const isTopUser = user === topUser;
+      const row = createLeaderboardRow(user, selectedRanking, isTopUser);
+      leaderboardBody.appendChild(row);
   }
 }
 
+// create leaderboard row
+function createLeaderboardRow(user, selectedRanking, isTopUser) {
+  const row = document.createElement("tr");
+
+  if (isTopUser) {
+    row.classList.add("top-user");
+  }
+
+  const usernameCell = document.createElement("th");
+  usernameCell.scope = "row";
+  usernameCell.textContent = user.username;
+
+  const clanCell = document.createElement("td");
+  clanCell.textContent = user.clan || "—";
+
+  const scoreCell = document.createElement("td");
+  scoreCell.textContent = getUserScore(user, selectedRanking);
+
+  row.appendChild(usernameCell);
+  row.appendChild(clanCell);
+  row.appendChild(scoreCell);
+
+  return row;
+}
+
+// display languages
 function displayLanguages(users) {
   const languages = getLanguages(users);
 
@@ -120,20 +120,22 @@ function displayLanguages(users) {
 
   // Add the programming languages
   for (const language of languages) {
-    const option = document.createElement("option");
-    option.value = language;
-    option.textContent = language;
-
-    rankingSelect.appendChild(option);
+    addRankingOption(language, language);
   }
 }
 
+// reset ranking option
 function resetRankingSelect() {
   rankingSelect.replaceChildren();
+  addRankingOption("overall", "Overall");
+}
 
+// add ranking option
+function addRankingOption(value, label) {
   const option = document.createElement("option");
-  option.value = "overall";
-  option.textContent = "Overall";
+
+  option.value = value;
+  option.textContent = label;
 
   rankingSelect.appendChild(option);
 }
