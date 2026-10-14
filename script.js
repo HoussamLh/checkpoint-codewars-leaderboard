@@ -23,7 +23,9 @@ rankingSelect.addEventListener("change", () => {
 // Handle username searches
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
-
+  if (submitButton.disabled) {
+    return;
+  }
   currentUsers = [];
   leaderboardBody.replaceChildren();
   message.textContent = "";
@@ -60,7 +62,7 @@ form.addEventListener("submit", async (event) => {
 
     message.textContent = 
     `${users.length} ${users.length === 1 ? "user" : "users"} loaded successfully.`;
-    
+
   } catch (error) {
     message.textContent = error.message;
 
