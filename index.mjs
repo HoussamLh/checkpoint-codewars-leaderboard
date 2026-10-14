@@ -70,3 +70,11 @@ export function parseUsernames(input) {
     .map((name) => name.trim())
     .filter((name) => name !== "");
 }
+
+// user score calculation
+export function getUserScore(user, selectedRanking = "overall") {
+  if (selectedRanking === "overall") {
+    return user.ranks.overall.score;
+  }
+  return user.ranks.languages[selectedRanking].score;
+}

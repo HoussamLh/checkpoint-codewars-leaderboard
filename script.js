@@ -92,15 +92,7 @@ function displayLeaderboard(users, selectedRanking = "overall") {
 
     const scoreCell = document.createElement("td");
 
-    let score;
-
-    if (selectedRanking === "overall") {
-      score = user.ranks.overall.score;
-    } else {
-      score = user.ranks.languages[selectedRanking].score;
-    }
-
-    scoreCell.textContent = score;
+    scoreCell.textContent = getUserScore(user, selectedRanking);
 
     row.appendChild(usernameCell);
     row.appendChild(clanCell);
