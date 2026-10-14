@@ -4,6 +4,7 @@ import {
   getLanguages,
   sortUsersByLanguage,
   parseUsernames,
+  getUserScore,
 } from "./index.mjs";
 
 const form = document.getElementById("users-form");
