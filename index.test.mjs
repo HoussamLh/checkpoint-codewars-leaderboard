@@ -7,6 +7,7 @@ import {
   getLanguages,
   sortUsersByLanguage,
   parseUsernames,
+  getUserScore,
 } from "./index.mjs";
 
 test("fetches a Codewars user successfully", async () => {
@@ -161,4 +162,25 @@ test("removes duplicate usernames", () => {
   const result = parseUsernames(users);
 
   assert.deepStrictEqual(result, ["Sam", "Ali", "John"]);
+});
+
+test("returns overall and language-specific user scores", () => {
+  const user = {
+    username: "Sam",
+    ranks: {
+      overall: { score: 900 },
+      languages: {
+        javascript: { score: 500 },
+        python: { score: 300 },
+      },
+    },
+  };
+
+  const overallScore = getUserScore(user);
+  const javascriptScore = getUserScore(user, "javascript");
+  const pythonScore = getUserScore(user, "python");
+
+  assert.strictEqual(overallScore, 900);
+  assert.strictEqual(javascriptScore, 500);
+  assert.strictEqual(pythonScore, 300);
 });
