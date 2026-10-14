@@ -58,12 +58,9 @@ form.addEventListener("submit", async (event) => {
     displayLanguages(users);
     displayLeaderboard(users);
 
-    message.textContent = 
-    `${users.length} ${users.length === 1 ? "user" : "users"} loaded successfully.`;
-
+    message.textContent = `${users.length} ${users.length === 1 ? "user" : "users"} loaded successfully.`;
   } catch (error) {
     message.textContent = error.message;
-
   } finally {
     submitButton.disabled = false;
   }
@@ -105,6 +102,7 @@ function displayLeaderboard(users, selectedRanking = "overall") {
   }
 }
 
+// display languages
 function displayLanguages(users) {
   const languages = getLanguages(users);
 
@@ -112,20 +110,22 @@ function displayLanguages(users) {
 
   // Add the programming languages
   for (const language of languages) {
-    const option = document.createElement("option");
-    option.value = language;
-    option.textContent = language;
-
-    rankingSelect.appendChild(option);
+    addRankingOption(language, language);
   }
 }
 
+// reset ranking option
 function resetRankingSelect() {
   rankingSelect.replaceChildren();
+  addRankingOption("overall", "Overall");
+}
 
+// add ranking option
+function addRankingOption(value, label) {
   const option = document.createElement("option");
-  option.value = "overall";
-  option.textContent = "Overall";
+
+  option.value = value;
+  option.textContent = label;
 
   rankingSelect.appendChild(option);
 }
