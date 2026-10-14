@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/c8a61a02-2a66-4f11-a4e5-728b87be9a0a
+
 # Codewars Leaderboard — Testing Evidence
 
 ## 1. Automated Unit Tests
@@ -82,7 +86,12 @@ The application displays a helpful error instead of showing incorrect results.
 The application displays a loading message and disables the submit button.
 
 
-[Watch the loading-state test](screenshots/06-loading-state.mov)
+[Watch the loading-state test]
+
+
+
+https://github.com/user-attachments/assets/48ecb697-4759-4db9-94b5-4c637a6368c5
+
 
 
 ### 2.7 Repeated Searches and Error Recovery
@@ -138,7 +147,13 @@ Manual testing confirmed that:
 The leaderboard was populated with three Codewars users before running the accessibility audit.
 
 
-[Watch the Overall leaderboard accessibility test](screenshots/09-lighthouse-overall.mov)
+[Watch the Overall leaderboard accessibility test]
+
+
+
+https://github.com/user-attachments/assets/cacccee6-2796-4006-b085-6590b3dbcfb0
+
+
 
 
 #### JavaScript Ranking
@@ -146,7 +161,12 @@ The leaderboard was populated with three Codewars users before running the acces
 The JavaScript ranking was selected before running the accessibility audit.
 
 
-[Watch the JavaScript ranking accessibility test](screenshots/10-lighthouse-javascript.mov)
+[Watch the JavaScript ranking accessibility test]
+
+
+
+https://github.com/user-attachments/assets/7a0788c5-c291-441b-b81c-dcfaf82f4aa6
+
 
 
 #### Invalid Username Error
@@ -154,7 +174,12 @@ The JavaScript ranking was selected before running the accessibility audit.
 An invalid username was submitted before running the accessibility audit.
 
 
-[Watch the error-state accessibility test](screenshots/11-lighthouse-error.mov)
+
+[Watch the error-state accessibility test]
+
+
+
+https://github.com/user-attachments/assets/2864cd32-13dc-4f26-ae17-07e4937ce8ec
 
 
 ### 3.3 Lighthouse — Full Audit Report
