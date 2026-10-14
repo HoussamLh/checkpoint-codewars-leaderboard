@@ -62,3 +62,11 @@ export function sortUsersByLanguage(users, selectedRanking) {
 
   return sortedUsers;
 }
+
+// converting the username input into an array of usernames.
+export function parseUsernames(input) {
+  return input
+    .split(",")
+    .map((name) => name.trim())
+    .filter((name) => name !== "");
+}

@@ -3,6 +3,7 @@ import {
   sortUsersByScore,
   getLanguages,
   sortUsersByLanguage,
+  parseUsernames,
 } from "./index.mjs";
 
 const form = document.getElementById("users-form");
@@ -32,11 +33,7 @@ form.addEventListener("submit", async (event) => {
   resetRankingSelect();
 
   // 1. Get and clean the usernames
-  const usernames = usernamesInput.value;
-  const validUsers = usernames
-    .split(",")
-    .map((name) => name.trim())
-    .filter((name) => name !== "");
+  const validUsers = parseUsernames(usernamesInput.value);
 
   // 2. Validate the input
   if (validUsers.length === 0) {
