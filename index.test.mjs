@@ -140,3 +140,16 @@ test("excludes users without the selected language and sorts by score", () => {
     ["John", "Sam"],
   );
 });
+
+test("shows a helpful message when the network request fails", async () => {
+  const scope = nock("https://www.codewars.com")
+    .get("/api/v1/users/Sam")
+    .replyWithError("Network connection failed");
+
+  await assert.rejects(getCodewarsUser("Sam"), {
+    message:
+      "Could not connect to Codewars. Check your internet connection and try again.",
+  });
+
+  assert.strictEqual(scope.isDone(), true);
+});

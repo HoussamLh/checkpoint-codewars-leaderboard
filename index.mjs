@@ -1,7 +1,16 @@
 export async function getCodewarsUser(username) {
   const url = `https://www.codewars.com/api/v1/users/${encodeURIComponent(username)}`;
 
-  const response = await fetch(url);
+  let response;
+
+  try {
+    response = await fetch(url);
+  } catch (error) {
+    throw new Error(
+      "Could not connect to Codewars. Check your internet connection and try again.",
+      { cause: error },
+    );
+  }
 
   if (response.status === 404) {
     throw new Error(
