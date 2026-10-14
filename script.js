@@ -76,10 +76,12 @@ function displayLeaderboard(users, selectedRanking = "overall") {
       ? sortUsersByScore(users)
       : sortUsersByLanguage(users, selectedRanking);
 
+  const topUser = sortedUsers[0];
+
   for (const user of sortedUsers) {
     const row = document.createElement("tr");
 
-    if (user === sortedUsers[0]) {
+    if (user === topUser) {
       row.classList.add("top-user");
     }
 
