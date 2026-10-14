@@ -97,9 +97,10 @@ Manual testing confirmed that:
 - The submit button becomes enabled after loading.
 - A valid search succeeds after an invalid username error.
 
+
 ## 3. Accessibility and HTML Validation
 
-### 3.1 Lighthouse accessibility
+### 3.1 Lighthouse Accessibility — Initial Page
 
 **Tool:** Google Chrome Lighthouse
 
@@ -107,15 +108,73 @@ Manual testing confirmed that:
 
 **Category:** Accessibility
 
-**Result:** PASS — 100/100 on the initial page state.
+**Result:** PASS — 100/100
 
 
-![Lighthouse accessibility score](screenshots/07-lighthouse-accessibility.png)
+![Initial page Lighthouse score](screenshots/07-lighthouse-accessibility.png)
 
 
-The screenshot records the initial page audit. Dynamic leaderboard states were tested manually, but a separate Lighthouse score for those states has not been recorded.
+### 3.2 Lighthouse Snapshot — Dynamic Page States
 
-### 3.2 HTML Validation
+**Tool:** Google Chrome Lighthouse
+
+**Mode:** Snapshot
+
+**Device:** Desktop
+
+**Category:** Accessibility
+
+**Result:** PASS — All tested states achieved 100/100.
+
+| Page state | Accessibility score |
+|---|---|
+| Initial page | 100/100 |
+| Overall leaderboard with three users | 100/100 |
+| JavaScript ranking selected | 100/100 |
+| Invalid username error | 100/100 |
+
+#### Overall Leaderboard
+
+The leaderboard was populated with three Codewars users before running the accessibility audit.
+
+
+[Watch the Overall leaderboard accessibility test](screenshots/09-lighthouse-overall.mov)
+
+
+#### JavaScript Ranking
+
+The JavaScript ranking was selected before running the accessibility audit.
+
+
+[Watch the JavaScript ranking accessibility test](screenshots/10-lighthouse-javascript.mov)
+
+
+#### Invalid Username Error
+
+An invalid username was submitted before running the accessibility audit.
+
+
+[Watch the error-state accessibility test](screenshots/11-lighthouse-error.mov)
+
+
+### 3.3 Lighthouse — Full Audit Report
+
+The initial page was tested using Google Chrome Lighthouse on desktop.
+
+| Category | Score |
+|---|---|
+| Performance | 100/100 |
+| Accessibility | 100/100 |
+| Best Practices | 100/100 |
+| SEO | 100/100 |
+
+
+[View the full Lighthouse PDF report](screenshots/accessibility-report-all-categories.pdf)
+
+
+The full PDF report documents the initial page-load audit. The separate videos provide evidence of the dynamic Snapshot audits.
+
+### 3.4 HTML Validation
 
 **Tool:** W3C Nu HTML Checker
 
@@ -125,6 +184,7 @@ The application's HTML source was checked using the W3C Nu HTML Checker.
 
 
 ![W3C HTML validation result](screenshots/08-Html-validation.png)
+
 
 
 ## 4. Conclusion
